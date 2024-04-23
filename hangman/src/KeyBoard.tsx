@@ -1,4 +1,11 @@
-type Props = {}
+import style from './Keyboard.module.css'
+
+type Props = {
+  activeLetter: string[]
+  inactiveLetter: string[]
+  disabled: boolean
+  addGuessedLetter: (letter: string) => void
+}
 
 const KEYS = [
   'a',
@@ -29,11 +36,22 @@ const KEYS = [
   'z',
 ]
 
-const KeyBoard = (props: Props) => {
+const KeyBoard = ({ activeLetter, inactiveLetter, disabled = false, addGuessedLetter }: Props) => {
   return (
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(75px,1fr))', gap: '.5rem' }}>
       {KEYS.map((key) => {
-        return <button key={key}>{key}</button>
+        const isActive = activeLetter.includes(key)
+        const isInactive = inactiveLetter.includes(key)
+        return (
+          <button
+            onClick={() => addGuessedLetter(key)}
+            className={`${style.btn} ${isActive ? style.active : ''} ${isInactive ? style.inactive : ''}`}
+            key={key}
+            disabled={isInactive || isActive || disabled}
+          >
+            {key}
+          </button>
+        )
       })}
     </div>
   )

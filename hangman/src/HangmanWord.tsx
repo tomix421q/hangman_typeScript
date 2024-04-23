@@ -1,7 +1,9 @@
-type Props = {}
-const HangmanWord = (props: Props) => {
-  const word = 'test'
-  const quessedLetters = ['t', 'l', 's']
+type Props = {
+  quessedLetters: string[]
+  wordToQuess: string
+  reveal?: boolean
+}
+const HangmanWord = ({ quessedLetters, wordToQuess, reveal = false }: Props) => {
   return (
     <div
       style={{
@@ -13,9 +15,16 @@ const HangmanWord = (props: Props) => {
         fontFamily: 'monospace',
       }}
     >
-      {word.split('').map((letter, index) => (
+      {wordToQuess.split('').map((letter, index) => (
         <span style={{ borderBottom: '.1em solid black' }} key={index}>
-          <span style={{ visibility: quessedLetters.includes(letter) ? 'visible' : 'hidden' }}>{letter}</span>
+          <span
+            style={{
+              visibility: quessedLetters.includes(letter) || reveal ? 'visible' : 'hidden',
+              color: reveal && !quessedLetters.includes(letter) === true ? 'red' : 'green',
+            }}
+          >
+            {letter}
+          </span>
         </span>
       ))}
     </div>
